@@ -78,6 +78,9 @@ class InCoordinator: NSObject, Coordinator {
     private var tokensCoordinator: TokensCoordinator? {
         return coordinators.compactMap { $0 as? TokensCoordinator }.first
     }
+    var predictionMarketsCoordinator: PredictionMarketsCoordinator? {
+        coordinators.compactMap { $0 as? PredictionMarketsCoordinator }.first
+    }
     var dappBrowserCoordinator: DappBrowserCoordinator? {
         coordinators.compactMap { $0 as? DappBrowserCoordinator }.first
     }
@@ -107,7 +110,7 @@ class InCoordinator: NSObject, Coordinator {
     private lazy var rampBuyService = Ramp(account: wallet)
     private lazy var tokenActionsService: TokenActionsServiceType = {
         let service = TokenActionsService()
-        service.register(service: rampBuyService)
+        //service.register(service: rampBuyService)
         service.register(service: oneInchSwapService)
 
         let honeySwapService = HoneySwap()
@@ -125,8 +128,8 @@ class InCoordinator: NSObject, Coordinator {
         quickSwap.theme = navigationController.traitCollection.uniswapTheme
 
         service.register(service: quickSwap)
-        service.register(service: ArbitrumBridge())
-        service.register(service: xDaiBridge())
+        //service.register(service: ArbitrumBridge())
+        //service.register(service: xDaiBridge())
 
         return service
     }()
@@ -443,6 +446,15 @@ class InCoordinator: NSObject, Coordinator {
         return coordinator
     }
 
+    private func createPredictionMarketsCoordinator(sessions: ServerDictionary<WalletSession>, browserOnly: Bool, analyticsCoordinator: AnalyticsCoordinator) -> PredictionMarketsCoordinator {
+        let coordinator = PredictionMarketsCoordinator(sessions: sessions, keystore: keystore, config: config, sharedRealm: realm, browserOnly: browserOnly, nativeCryptoCurrencyPrices: nativeCryptoCurrencyPrices, restartQueue: restartQueue, analyticsCoordinator: analyticsCoordinator)
+        coordinator.delegate = self
+        coordinator.start()
+        coordinator.rootViewController.tabBarItem = UITabBarItem(title: R.string.localizable.predictionMarketsTabbarItemTitle(), image: R.image.tab_predictions(), selectedImage: nil)
+        addCoordinator(coordinator)
+        return coordinator
+    }
+
     private func createBrowserCoordinator(sessions: ServerDictionary<WalletSession>, browserOnly: Bool, analyticsCoordinator: AnalyticsCoordinator) -> DappBrowserCoordinator {
         let coordinator = DappBrowserCoordinator(sessions: sessions, keystore: keystore, config: config, sharedRealm: realm, browserOnly: browserOnly, nativeCryptoCurrencyPrices: nativeCryptoCurrencyPrices, restartQueue: restartQueue, analyticsCoordinator: analyticsCoordinator)
         coordinator.delegate = self
@@ -489,6 +501,9 @@ class InCoordinator: NSObject, Coordinator {
         } else {
             viewControllers.append(transactionCoordinator.navigationController)
         }
+
+        let pmCoordinator = createPredictionMarketsCoordinator(sessions: walletSessions, browserOnly: false, analyticsCoordinator: analyticsCoordinator)
+        viewControllers.append(pmCoordinator.navigationController)
 
         let browserCoordinator = createBrowserCoordinator(sessions: walletSessions, browserOnly: false, analyticsCoordinator: analyticsCoordinator)
         viewControllers.append(browserCoordinator.navigationController)
@@ -644,6 +659,11 @@ class InCoordinator: NSObject, Coordinator {
         return subscription.map({ viewModel -> BigInt? in
             return viewModel.value
         }, on: .main)
+    }
+
+    private func isViewControllerPredictionMarketsTab(_ viewController: UIViewController) -> Bool {
+        guard let predictionMarketsCoordinator = predictionMarketsCoordinator else { return false }
+        return predictionMarketsCoordinator.rootViewController.navigationController == viewController
     }
 
     private func isViewControllerDappBrowserTab(_ viewController: UIViewController) -> Bool {
@@ -945,6 +965,11 @@ extension InCoordinator: ActivityViewControllerDelegate {
 
 extension InCoordinator: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        if isViewControllerPredictionMarketsTab(viewController) && viewController == tabBarController.selectedViewController {
+            loadPredictionMarketsPageIfNeeded()
+            return false
+        }
+
         if isViewControllerDappBrowserTab(viewController) && viewController == tabBarController.selectedViewController {
             loadHomePageIfNeeded()
             return false
@@ -953,8 +978,33 @@ extension InCoordinator: UITabBarControllerDelegate {
     }
 
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if isViewControllerPredictionMarketsTab(viewController) {
+            loadPredictionMarketsPageIfEmpty()
+        }
+
         if isViewControllerDappBrowserTab(viewController) {
             loadHomePageIfEmpty()
+        }
+    }
+
+    private func loadPredictionMarketsPageIfNeeded() {
+        // NOTE: open home web page if tap on browser tab bar icon, should we only when browser opened
+        guard let coordinator = predictionMarketsCoordinator else { return }
+
+        if let url = config.predictionMarketsPageURL {
+            coordinator.open(url: url, animated: false)
+        } else {
+            coordinator.showPredictionMarketsHome()
+        }
+    }
+
+    private func loadPredictionMarketsPageIfEmpty() {
+        guard let coordinator = predictionMarketsCoordinator, !coordinator.hasWebPageLoaded else { return }
+
+        if let url = config.predictionMarketsPageURL {
+            coordinator.open(url: url, animated: false)
+        } else {
+            coordinator.showPredictionMarketsHome()
         }
     }
 
@@ -1092,6 +1142,32 @@ extension InCoordinator: PaymentCoordinatorDelegate {
         coordinator.dismiss(animated: true)
 
         removeCoordinator(coordinator)
+    }
+}
+
+extension InCoordinator: PredictionMarketsCoordinatorDelegate {
+    func didSentTransaction(transaction: SentTransaction, inCoordinator coordinator: PredictionMarketsCoordinator) {
+        handlePendingTransaction(transaction: transaction)
+    }
+
+    func importUniversalLink(url: URL, forCoordinator coordinator: PredictionMarketsCoordinator) {
+        delegate?.importUniversalLink(url: url, forCoordinator: self)
+    }
+
+    func handleUniversalLink(_ url: URL, forCoordinator coordinator: PredictionMarketsCoordinator) {
+        delegate?.handleUniversalLink(url, forCoordinator: self)
+    }
+
+    func handleCustomUrlScheme(_ url: URL, forCoordinator coordinator: PredictionMarketsCoordinator) {
+        delegate?.handleCustomUrlScheme(url, forCoordinator: self)
+    }
+
+    func restartToAddEnableAndSwitchBrowserToServer(inCoordinator coordinator: PredictionMarketsCoordinator) {
+        processRestartQueueAndRestartUI()
+    }
+
+    func restartToEnableAndSwitchBrowserToServer(inCoordinator coordinator: PredictionMarketsCoordinator) {
+        processRestartQueueAndRestartUI()
     }
 }
 

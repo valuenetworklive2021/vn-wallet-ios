@@ -13,17 +13,17 @@ class ServersCoordinator: Coordinator {
     static var serversOrdered: [RPCServer] {
         let all: [RPCServer] = [
             .main,
-            .xDai,
+            /*.xDai,
             .classic,
             .poa,
             .ropsten,
             .goerli,
-            .kovan,
+            .kovan,*/
             .rinkeby,
-            .sokol,
+            //.sokol,
             .binance_smart_chain,
             .binance_smart_chain_testnet,
-            .callisto,
+            /*.callisto,
             .heco,
             .heco_testnet,
             .artis_sigma1,
@@ -37,7 +37,7 @@ class ServersCoordinator: Coordinator {
             .optimistic,
             .optimisticKovan,
             .cronosTestnet,
-            .arbitrum,
+            .arbitrum,*/
         ] + RPCServer.customServers
         if Features.isPalmEnabled {
             return all + [.palm, .palmTestnet]

@@ -24,5 +24,5 @@ enum Features {
     static let isUsingPrivateNetwork = true
     static let isUsingAppEnforcedTimeoutForMakingWalletConnectConnections = true
     static let isAttachingLogFilesToSupportEmailEnabled = false
-    static let isPalmEnabled = true
+    static let isPalmEnabled = false
 }

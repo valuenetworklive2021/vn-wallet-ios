@@ -80,7 +80,7 @@ class WalletConnectServer {
     }
 
     private enum Keys {
-        static let server = "AlphaWallet"
+        static let server = "VN Wallet"
     }
 
     private let walletMeta = Session.ClientMeta(name: Keys.server, description: nil, icons: [], url: URL(string: Constants.website)!)

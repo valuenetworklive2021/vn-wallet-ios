@@ -26,6 +26,7 @@ extension UniswapERC20Token {
 
     private static let availableTokens: [UniswapERC20Token] = [
         .init(name: "ETH", contract: Constants.nullAddress, decimal: 0),
+        .init(name: "VNTW", contract: AlphaWallet.Address(string: "0xd0f05D3D4e4d1243Ac826d8c6171180c58eaa9BC")!, decimal: 18),
         .init(name: "USDT", contract: AlphaWallet.Address(string: "0xdAC17F958D2ee523a2206206994597C13D831ec7")!, decimal: 6),
         .init(name: "LINK", contract: AlphaWallet.Address(string: "0x514910771AF9Ca656af840dff83E8264EcF986CA")!, decimal: 18),
         .init(name: "BNB", contract: AlphaWallet.Address(string: "0xB8c77482e45F1F44dE1745F52C74426C631bDD52")!, decimal: 18),

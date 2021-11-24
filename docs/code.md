@@ -1,3 +1,33 @@
+### Getting Started
+
+1. [Download  Xcode 13](https://developer.apple.com/download/more/)
+2. Clone this repository
+3. Run `make bootstrap` to install tools and dependencies.
+
+### Add your token to VN Wallet
+
+If you’d like to include TokenScript and extend your token functionalities, please refer to [TokenScript](https://github.com/AlphaWallet/TokenScript).
+
+### Add dApp to the “Discover dApps” section in the browser
+
+Submit a PR to the following file:
+https://github.com/valuenetworklive2021/vn-wallet-ios/blob/master/AlphaWallet/Browser/ViewModel/Dapps.swift
+
+
+### Replace API Keys
+
+API keys are stored in the file `AlphaWallet/Settings/Types/Constants+Credentials.swift`. You can replace the keys for your own build. Tell git to ignore changes to that file by running:
+
+```
+git update-index --assume-unchanged AlphaWallet/Settings/Types/Constants+Credentials.swift
+```
+
+Undo this with:
+
+```
+git update-index --no-assume-unchanged AlphaWallet/Settings/Types/Constants+Credentials.swift
+```
+
 ### Localization
 
 Format for localization keys:

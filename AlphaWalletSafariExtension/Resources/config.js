@@ -3,7 +3,7 @@
 var optionsByDefault = {
     enableEip681UrlsOverriding: true,
     enableWCUrlsOverriding: true,
-    alphaWalletPrefix: "https://aw.app/",
+    alphaWalletPrefix: "https://vnw.app/",
     elementsForOverride: ["a", "link"]
 }
 

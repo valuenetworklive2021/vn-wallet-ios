@@ -10,8 +10,8 @@ protocol LockInterface {
 
 class Lock: LockInterface {
     private struct Keys {
-        static let service = "alphawallet.lock"
-        static let account = "alphawallet.account"
+        static let service = "vnwallet.lock"
+        static let account = "vnwallet.account"
     }
 
     private let passcodeAttempts = "passcodeAttempts"

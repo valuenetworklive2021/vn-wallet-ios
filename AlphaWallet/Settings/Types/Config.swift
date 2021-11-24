@@ -158,6 +158,8 @@ struct Config {
         static let privateNetworkProvider = "privateNetworkProvider"
         static let customRpcServers = "customRpcServers"
         static let homePageURL = "homePageURL"
+        static let predictionMarketsPageURL = "predictionMarketsPageURL"
+        static let predictionMarketsAppURL = "https://app.valuenetwork.live/"
     }
 
     let defaults: UserDefaults
@@ -224,6 +226,24 @@ struct Config {
         }
         set {
             defaults.set(newValue?.absoluteString, forKey: Keys.homePageURL)
+        }
+    }
+
+    var predictionMarketsPageURL: URL? {
+        get {
+            return defaults.string(forKey: Keys.predictionMarketsPageURL).flatMap { URL(string: $0) }
+        }
+        set {
+            defaults.set(newValue?.absoluteString, forKey: Keys.predictionMarketsPageURL)
+        }
+    }
+
+    var predictionMarketsAppURL: URL? {
+        get {
+            return defaults.string(forKey: Keys.predictionMarketsAppURL).flatMap { URL(string: $0) }
+        }
+        set {
+            defaults.set(newValue?.absoluteString, forKey: Keys.predictionMarketsAppURL)
         }
     }
 

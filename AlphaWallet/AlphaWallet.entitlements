@@ -6,26 +6,26 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:app.awallet.io</string>
-		<string>applinks:aw.app</string>
-		<string>applinks:classic.aw.app</string>
-		<string>applinks:callisto.aw.app</string>
-		<string>applinks:kovan.aw.app</string>
-		<string>applinks:ropsten.aw.app</string>
-		<string>applinks:rinkeby.aw.app</string>
-		<string>applinks:poa.aw.app</string>
-		<string>applinks:sokol.aw.app</string>
-		<string>applinks:xdai.aw.app</string>
-		<string>applinks:custom.aw.app</string>
-		<string>applinks:goerli.aw.app</string>
-		<string>applinks:binance.aw.app</string>
-		<string>applinks:test-binance.aw.app</string>
+		<string>applinks:valuenetwork.live</string>
+		<string>applinks:vnw.app</string>
+		<string>applinks:classic.vnw.app</string>
+		<string>applinks:callisto.vnw.app</string>
+		<string>applinks:kovan.vnw.app</string>
+		<string>applinks:ropsten.vnw.app</string>
+		<string>applinks:rinkeby.vnw.app</string>
+		<string>applinks:poa.vnw.app</string>
+		<string>applinks:sokol.vnw.app</string>
+		<string>applinks:xdai.vnw.app</string>
+		<string>applinks:custom.vnw.app</string>
+		<string>applinks:goerli.vnw.app</string>
+		<string>applinks:binance.vnw.app</string>
+		<string>applinks:test-binance.vnw.app</string>
 	</array>
 	<key>com.apple.developer.default-data-protection</key>
 	<string>NSFileProtectionComplete</string>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.stormbird.alphawallet</string>
+		<string>group.live.valuenetwork.alphawallet</string>
 	</array>
 </dict>
 </plist>

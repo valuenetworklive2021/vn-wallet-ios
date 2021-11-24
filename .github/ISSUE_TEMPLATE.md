@@ -1,5 +1,5 @@
 name: Bug Report
-about: Using AlphaWallet, but it's not working as you expect?
+about: Using VN Wallet, but it's not working as you expect?
 
 ---
 

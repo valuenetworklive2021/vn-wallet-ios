@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>VN Wallet</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -23,7 +25,7 @@
 			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.stormbird.alphawallet.tsml</string>
+				<string>live.valuenetwork.alphawallet.tsml</string>
 			</array>
 		</dict>
 	</array>
@@ -170,7 +172,7 @@
 			<key>UTTypeDescription</key>
 			<string>TokenScript file</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.stormbird.alphawallet.tsml</string>
+			<string>live.valuenetwork.alphawallet.tsml</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

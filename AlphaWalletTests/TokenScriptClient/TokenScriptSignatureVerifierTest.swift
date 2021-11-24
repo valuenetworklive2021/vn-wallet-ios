@@ -20,7 +20,7 @@ class TokenScriptSignatureVerifierTest: XCTestCase {
         tokenScriptSignatureVerifier.verifyXMLSignatureViaAPI(xml: uniswapTokenTSML) { result in
             switch result {
             case .success(domain: let domain):
-                XCTAssertEqual(domain, "*.aw.app")
+                XCTAssertEqual(domain, "*.vnw.app")
             case .failed, .unknownCn:
                 XCTFail("Unexpected TokenScript signature verification result")
             }
